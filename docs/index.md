@@ -4,15 +4,6 @@ markdown2extras: tables, code-friendly, cuddled-lists, link-patterns
 markdown2linkpatternsfile: link-patterns.txt
 apisections: Images, Channels, Miscellaneous API
 ---
-<!--
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
--->
-
-<!--
-    Copyright (c) 2016, Joyent, Inc.
--->
 
 # Image API (IMGAPI)
 
@@ -118,15 +109,15 @@ A summary of fields (details are provided below):
 | [requirements.min_platform](#manifest-requirementsmin_platform) | Object  | No                            | Yes      | Minimum platform requirement for provisioning with this image.                                                                                                                                  |
 | [requirements.max_platform](#manifest-requirementsmax_platform) | Object  | No                            | Yes      | Maximum platform requirement for provisioning with this image.                                                                                                                                  |
 | [users](#manifest-users)                                        | Array   | No                            | Yes      | A list of users for which passwords should be generated for provisioning. This may only make sense for some images. Example: `[{"name": "root"}, {"name": "admin"}]`                            |
-| [billing_tags](#manifest-billing-tags)                          | Array   | No                            | Yes      | A list of tags that can be used by operators for additional billing processing.                                                                                                                 |
+| [billing_tags](#manifest-billing_tags)                          | Array   | No                            | Yes      | A list of tags that can be used by operators for additional billing processing.                                                                                                                 |
 | [traits](#manifest-traits)                                      | Object  | No                            | Yes      | An object that defines a collection of properties that is used by other APIs to evaluate where should customer VMs be placed.                                                                   |
 | [tags](#manifest-tags)                                          | Object  | No                            | Yes      | An object of key/value pairs that allows clients to categorize images by any given criteria.                                                                                                    |
-| [generate_passwords](#manifest-generate-passwords)              | Boolean | No                            | Yes      | A boolean indicating whether to generate passwords for the users in the "users" field. If not present, the default value is true.                                                               |
-| [inherited_directories](#manifest-inherited-directories)        | Array   | No                            | Yes      | A list of inherited directories (other than the defaults for the brand).                                                                                                                        |
-| [nic_driver](#manifest-nic-driver)                              | String  | Yes (if `type==="zvol"`)      | Yes      | NIC driver used by this VM image.                                                                                                                                                               |
-| [disk_driver](#manifest-disk-driver)                            | String  | Yes (if `type==="zvol"`)      | Yes      | Disk driver used by this VM image.                                                                                                                                                              |
-| [cpu_type](#manifest-cpu-type)                                  | String  | Yes (if `type==="zvol"`)      | Yes      | The QEMU CPU model to use for this VM image.                                                                                                                                                    |
-| [image_size](#manifest-image-size)                              | Number  | Yes (if `type==="zvol"`)      | Yes      | The size (in MiB) of this VM image's disk.                                                                                                                                                      |
+| [generate_passwords](#manifest-generate_passwords)              | Boolean | No                            | Yes      | A boolean indicating whether to generate passwords for the users in the "users" field. If not present, the default value is true.                                                               |
+| [inherited_directories](#manifest-inherited_directories)        | Array   | No                            | Yes      | A list of inherited directories (other than the defaults for the brand).                                                                                                                        |
+| [nic_driver](#manifest-nic_driver)                              | String  | Yes (if `type==="zvol"`)      | Yes      | NIC driver used by this VM image.                                                                                                                                                               |
+| [disk_driver](#manifest-disk_driver)                            | String  | Yes (if `type==="zvol"`)      | Yes      | Disk driver used by this VM image.                                                                                                                                                              |
+| [cpu_type](#manifest-cpu_type)                                  | String  | Yes (if `type==="zvol"`)      | Yes      | The QEMU CPU model to use for this VM image.                                                                                                                                                    |
+| [image_size](#manifest-image_size)                              | Number  | Yes (if `type==="zvol"`)      | Yes      | The size (in MiB) of this VM image's disk.                                                                                                                                                      |
 | [channels](#manifest-channels)                                  | Array   | Yes (if server uses channels) | Yes      | Array of channel names to which this image belongs.                                                                                                                                             |
 
 "Mutable?" refers to whether this field can be edited via
@@ -201,12 +192,21 @@ A version string for this image. Maximum 128 characters. This is an opaque
 string, i.e. no particular format or structure is enforced and
 no ordering with other versions is implied. However, it is strongly suggested
 that the [semver](http://semver.org/) versioning scheme be
-followed. Further, the simple `Major.Minor.Patch` semver subset is ideal.
+followed.
 
 Note that image `name` and `version` do not make a unique identifier for
 an image. Separate users (and even the same user) can create images with
 the same name and version. The image `uuid` is the only unique identifier
 for an image.
+
+Starting in IMGAPI v3.2.0, support was added to allow '+' in the "version"
+field, because this is one of the characters [allowed by
+semver](http://semver.org/#spec-item-10). However, it wasn't until OS-5798 that
+`imgadm` (v3.7.0) in the platform was update to allow '+' in a version.
+Therefore a **warning**: do not use '+' in an image version until you know that
+the minimum platform version for any server in your target DC(s) is greater than
+or equal to 20161118T231131Z (when OS-5798 was
+[integrated](https://github.com/joyent/smartos-live/commit/fc5816a)).
 
 
 ## Manifest: description
