@@ -10,7 +10,7 @@
     "bunyan": "1.8.1",
     "cmdln": "3.2.1",
     "dashdash": "1.10.0",
-    "docker-registry-client": "3.2.4",
+    "docker-registry-client": "3.2.5",
     "expiring-lru-cache": "2.1.0",
     "extsprintf": "1.2.0",
     "forkexec": "1.1.0",
