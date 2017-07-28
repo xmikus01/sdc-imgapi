@@ -1,5 +1,9 @@
 # IMGAPI changelog
 
+## 4.1.0
+
+- DOCKER-524: Implement docker push
+
 ## 4.0.3
 
 - IMGAPI-637: correctly report when docker image is update to date
